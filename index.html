@@ -1,0 +1,17 @@
+<body>
+  <input type="file" id="fileInput" />
+  <button id="uploade">上传</button>
+
+  <script>
+    uploade.addEventListener('click', () => {
+      if (fileInput.files.length < 0) console.wran('请选择文件再上传！');
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      fetch('http://10.2.13.116:8088/uploadFile', {
+        method: "POST",
+        body: formData,
+      }).then(res => res.text()).then(res => console.log(res));
+    })
+  </script>
+
+</body>
