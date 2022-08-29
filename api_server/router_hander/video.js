@@ -17,8 +17,8 @@ exports.addVideos = (req, res) => {
     ...req.body,
     video_date: new Date(),
   }
-  const sql = `select * from video where video_id = ?`
-  db.query(sql, videoInfo.video_id, (err, results) => {
+  const sql = `select * from video where video_title = ?`
+  db.query(sql, videoInfo.video_title, (err, results) => {
     if (err) return res.cc(err)
     const sql = `insert into video set?`
     db.query(sql, videoInfo, (err, results) => {
@@ -44,7 +44,7 @@ exports.addVideos = (req, res) => {
 // }
 
 exports.deleteVideoById = (req, res) => {
-  const sql = `update video set video_id = 1 where video_id = ?`
+  const sql = `update video set is_delete = 1 where video_id = ?`
   db.query(sql, req.params.video_id, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows !== 1) return res.cc('删除视频失败')
@@ -62,7 +62,7 @@ exports.updateVideoById = (req, res) => {
 }
 
 exports.getPage = (req, res) => {
-  const sql = `select * from video`
+  const sql = `select * from video where is_delete = 0`
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
     let current = Number(req.query.current)
@@ -87,5 +87,42 @@ exports.getPage = (req, res) => {
         total,
       })
     }
+  })
+}
+
+// exports.changeVideo = (req, res) => {
+//   const sql = `update video set ? where video_id = ? `
+//   db.query(sql, [req.body, req.body.video_id], (err, results) => {
+//     console.log(req.body);
+//     if (err) return res.cc(err)
+//     if (results.affectedRows !== 1) return res.cc('更新视频失败！')
+//     res.cc('更新视频成功', 0)
+//   })
+// }
+
+exports.changeVideo1 = (req, res) => {
+  const sql = `select * from video where video_id = ?`
+  db.query(sql, req.params.video_id, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取视频数据成功',
+      data: results[0],
+    })
+  })
+}
+
+exports.searchVideo1 = (req, res) => {
+  //处理字符串
+  const sql = `select * from video where video_title LIKE '%${req.body.value}%' or video_author LIKE '%${req.body.value}%'`
+  db.query(sql, req.body.value, (err, results) => {
+    if (err) return res.cc(err)
+    if (results.length == 0) return res.cc('搜索失败')
+    res.send({
+      status: 0,
+      message: '获取视频数据成功',
+      data: results,
+      total: results.length,
+    })
   })
 }

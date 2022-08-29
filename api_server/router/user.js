@@ -7,11 +7,8 @@ const {
   admin_login_schema
 } = require('../schema/user')
 
-
 router.post('/reguser', userHandler.regUser)
-
 router.post('/login', userHandler.login)
-
 router.post('/admin_login', expressJoi(admin_login_schema), userHandler.admin_login)
 
 module.exports = router

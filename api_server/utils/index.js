@@ -1,14 +1,11 @@
 const cors = require('cors');
 const express = require('express');
-const bdParser = require('body-parser');
+const bdParser = require('body-parser'); // 挂载文章路由前缀
 const videoRouter = require('../router/video')
-const jwt = require('jsonwebtoken')
-const expressJWT = require('express-jwt')
-// 挂载文章路由前缀
-const artCateRouter = require('../router/artcate')
+const articleRouter = require('../router/article')
 const userRouter = require('../router/user')
 const userinfoRouter = require('../router/userinfo')
-const articleRouter = require('../router/article')
+const path = require("path")
 
 module.exports = (app) => {
   app.use(bdParser.urlencoded({
@@ -19,8 +16,7 @@ module.exports = (app) => {
   app.use(express.urlencoded({
     extended: false
   }))
-  app.use(express.json())
-  //错误中间件
+  app.use(express.json()) //错误中间件
   app.use(function (req, res, next) {
     res.cc = function (err, status = 1) {
       res.send({
@@ -31,12 +27,10 @@ module.exports = (app) => {
     next()
   })
 
-  app.use('/my/artcate', artCateRouter)
-
   app.use('/my/article', articleRouter)
-
-  app.use('/my', videoRouter)
+  app.use('/my/video', videoRouter)
   app.use('/api', userRouter)
+  app.use('/my', userinfoRouter)
   //身份认证
   app.use((err, req, res, next) => {
     if (err instanceof Joi.ValidationError) return res.cc(err)
@@ -45,6 +39,6 @@ module.exports = (app) => {
   })
 
   const Joi = require('joi')
-  app.use('/my', userinfoRouter)
+
 
 }

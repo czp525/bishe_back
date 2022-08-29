@@ -5,9 +5,8 @@ const nickname = joi.string().required()
 const admin_name = joi.string()
 const admin_password = joi.string().required()
 const phonenumber = joi.required()
-
 const avatar = joi.string().required()
-
+const value = joi.string().required()
 const password = joi
   .string()
   .pattern(/^[\S]{6,12}$/)
@@ -46,5 +45,11 @@ exports.update_password_schema = {
 exports.update_avatar_schema = {
   body: {
     avatar,
+  },
+}
+
+exports.user_search_schema = {
+  body: {
+    value,
   },
 }

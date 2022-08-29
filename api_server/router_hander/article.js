@@ -1,24 +1,128 @@
 const db = require('../db/index')
 
-exports.addArticle = (req, res) => {
-  // if (!req.file || req.file.fieldname !== 'cover_img')
-  //   return res.cc('文章封面是必选参数！')
-  // const path = require('path')
-  // console.log(req.body);
+exports.getArticles = (req, res) => {
+  const sql = `select * from article where is_delete = 0 `
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取文章数据成功',
+      data: results[0],
+    })
+  })
+}
+
+exports.addArticles = (req, res) => {
   const articleInfo = {
     ...req.body,
-    // cover_img: path.join('/uploads', req.file.fieldname),
-    // author_id: req.body.id,
     article_date: new Date(),
   }
-  // console.log(articleInfo);
-  const sql = `insert into article set ?`
-  db.query(sql, articleInfo, (err, results) => {
-    if (err) {
-      console.log(err)
-      return res.cc(err)
+  const sql = `select * from article where title = ?`
+  db.query(sql, req.body.title, (err, results) => {
+
+    if (err) return res.cc(err)
+    const sql = `insert into article set?`
+    db.query(sql, articleInfo, (err, results) => {
+      if (err) return res.cc(err)
+      if (results.affectedRows !== 1) return res.cc('新增文章失败')
+      res.cc('新增文章成功', 0)
+    })
+  })
+}
+
+exports.deleteArticleById = (req, res) => {
+  const sql = `update article set is_delete = 1 where article_id = ?`
+  db.query(sql, req.params.article_id, (err, results) => {
+    if (err) return res.cc(err)
+    if (results.affectedRows !== 1) return res.cc('删除文章失败')
+    res.cc('删除文章成功', 0)
+  })
+}
+
+exports.getArticleById = (req, res) => {
+  const sql = `select * from article where article_id =?`
+  db.query(sql, req.params.article_id, (err, results) => {
+    if (err) return res.cc(err)
+    if (results.length !== 1) return res.cc('获取文章数据失败')
+    res.send({
+      status: 0,
+      message: '获取文章数据成功',
+      data: results[0],
+    })
+  })
+}
+
+exports.updateArticleById = (req, res) => {
+  const sql = `update article set ? where article_id = ?`
+  db.query(sql, [req.body, req.body.article_id], (err, results) => {
+    if (err) return res.cc(err)
+    if (results.affectedRows !== 1) return res.cc('更新文章失败！')
+    res.cc('更新文章成功！', 0)
+  })
+}
+
+exports.getPage = (req, res) => {
+  const sql = `select * from article where is_delete = 0`
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    let current = Number(req.query.current)
+    let pageSize = 10
+    let sumpage = Math.ceil(results.length / pageSize)
+    if (current == '') {
+      let data = results.splice(0, pageSize)
+      res.send({
+        sumpage: sumpage,
+        status: 200,
+        message: '获取信息成功',
+        data: data,
+        total: results.length,
+      })
+    } else {
+      const total = results.length
+      let data = results.splice((current - 1) * pageSize, pageSize)
+      res.send({
+        sumpage: sumpage,
+        message: '获取信息成功',
+        data: data,
+        total,
+      })
     }
-    if (results.affectedRows !== 1) return res.cc('发布失败')
-    res.cc('发布成功', 0)
+  })
+}
+
+exports.changeArticle = (req, res) => {
+  const sql = `select * from article where article_id = ?`
+  db.query(sql, req.params.article_id, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取文章数据成功',
+      data: results[0],
+    })
+  })
+}
+
+// exports.changeArticle1 = (req, res) => {
+//   const sql = `update article set ? where article_id = ? `
+//   db.query(sql, [req.body, req.body.article_id], (err, results) => {
+//     if (err) return res.cc(err)
+//     if (results.affectedRows !== 1) return res.cc('更新文章失败！')
+
+//     res.cc('更新文章成功', 0)
+//   })
+// }
+
+exports.searchArticle = (req, res) => {
+  const sql = `select * from article where title LIKE '%${req.body.value}%' or author LIKE '%${req.body.value}%'`
+  db.query(sql, req.body.value, (err, results) => {
+    if (err) return res.cc(err)
+    if (results.length == 0) return res.cc('搜索失败')
+    res.send({
+      status: 0,
+      message: '获取文章数据成功',
+      data: results,
+      total: results.length,
+    })
+
   })
 }

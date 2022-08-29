@@ -1,5 +1,15 @@
 const db = require('../db/index')
 const bcrypt = require('bcryptjs')
+const mysql = require('mysql')
+// var db1 = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '123456',
+//   database: 'my_db_01',
+//   multipleStatements: true
+// });
+
+
 
 //获取用户基本信息
 exports.getUserInfo = (req, res) => {
@@ -62,5 +72,17 @@ exports.updateAvatar = (req, res) => {
     if (err) return res.cc(err)
     if (results.affectedRows !== 1) return res.cc('更新头像失败')
     res.cc('更新头像成功', 0)
+  })
+}
+
+exports.userSearch = (req, res) => {
+  db.query(`SELECT article_id,author,title FROM article WHERE title LIKE '%${req.body.value}%'; SELECT video_id,author,title FROM video WHERE title LIKE '%${req.body.value}%'`, function (err, result, fields) {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取文章成功',
+      data: result,
+      total: results.length,
+    })
   })
 }
