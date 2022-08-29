@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "node ./api_server/app.js --host 10.2.13.116"
+    "server": "node ./api_server/app.js --host 192.168.67.29"
   },
   "author": "",
   "license": "ISC",
