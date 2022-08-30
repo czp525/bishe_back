@@ -17,8 +17,8 @@ exports.addVideos = (req, res) => {
     ...req.body,
     video_date: new Date(),
   }
-  const sql = `select * from video where video_title = ?`
-  db.query(sql, videoInfo.video_title, (err, results) => {
+  const sql = `select * from video where title = ?`
+  db.query(sql, videoInfo.title, (err, results) => {
     if (err) return res.cc(err)
     const sql = `insert into video set?`
     db.query(sql, videoInfo, (err, results) => {
@@ -114,7 +114,7 @@ exports.changeVideo1 = (req, res) => {
 
 exports.searchVideo1 = (req, res) => {
   //处理字符串
-  const sql = `select * from video where video_title LIKE '%${req.body.value}%' or video_author LIKE '%${req.body.value}%'`
+  const sql = `select * from video where title LIKE '%${req.body.value}%' or author LIKE '%${req.body.value}%'`
   db.query(sql, req.body.value, (err, results) => {
     if (err) return res.cc(err)
     if (results.length == 0) return res.cc('搜索失败')
@@ -123,6 +123,30 @@ exports.searchVideo1 = (req, res) => {
       message: '获取视频数据成功',
       data: results,
       total: results.length,
+    })
+  })
+}
+
+exports.randVideo = (req, res) => {
+  const sql = `select video_id,video_pic from video ORDER BY RAND() LIMIT 4`
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '随机获取成功',
+      data: results,
+    })
+  })
+}
+
+exports.videolist = (req, res) => {
+  const sql = `select video_id,title,clicknum from video order by clicknum DESC limit 8`
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取排行榜成功',
+      data: results,
     })
   })
 }

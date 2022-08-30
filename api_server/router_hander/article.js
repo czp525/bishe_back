@@ -126,3 +126,27 @@ exports.searchArticle = (req, res) => {
 
   })
 }
+
+exports.randArticle = (req, res) => {
+  const sql = `select article_id,article_pic from article ORDER BY RAND() LIMIT 4`
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '随机获取成功',
+      data: results,
+    })
+  })
+}
+
+exports.articlelist = (req, res) => {
+  const sql = `select article_id,title,clicknum from article order by clicknum DESC limit 8`
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取排行榜成功',
+      data: results,
+    })
+  })
+}

@@ -15,7 +15,7 @@ exports.add_video_schema = {
     title,
     video_type,
     video_type_classify,
-    author,
+    video_author,
     video_introduce,
     video_url,
   },

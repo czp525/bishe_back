@@ -86,3 +86,14 @@ exports.userSearch = (req, res) => {
     })
   })
 }
+
+exports.randindex = (req, res) => {
+  db.query(`SELECT article_id,article_pic FROM article ORDER BY RAND() LIMIT 2;SELECT video_id,video_pic FROM video ORDER BY RAND() LIMIT 2;`, function (err, result, fields) {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取成功',
+      data: result,
+    })
+  })
+}

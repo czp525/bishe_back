@@ -13,6 +13,7 @@ const {
 } = require('../schema/user')
 
 router.get('/userinfo', userinfo_handler.getUserInfo)
+router.get('/randindex', userinfo_handler.randindex)
 router.post('/updateuserinfo', expressJoi(update_userinfo_schema), userinfo_handler.updateUserInfo)
 router.post('/updatepwd', expressJoi(update_password_schema), userinfo_handler.updatePassword)
 router.post('/updateavatar', expressJoi(update_avatar_schema), userinfo_handler.updateAvatar)
