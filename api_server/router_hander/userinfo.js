@@ -75,17 +75,36 @@ exports.updateAvatar = (req, res) => {
   })
 }
 
-exports.userSearch = (req, res) => {
-  db.query(`SELECT article_id,author,title FROM article WHERE title LIKE '%${req.body.value}%'; SELECT video_id,author,title FROM video WHERE title LIKE '%${req.body.value}%'`, function (err, result, fields) {
+exports.getPage = (req, res) => {
+  const sql = `select * from article where title like '%${req.body.value}%' or author like '%${req.body.value}%';select * from video where title like '%${req.body.value}%' or author like '%${req.body.value}%'`
+  db.query(sql, req.body.value, (err, results) => {
     if (err) return res.cc(err)
-    res.send({
-      status: 0,
-      message: '获取文章成功',
-      data: result,
-      total: results.length,
-    })
+    let current = Number(req.query.current)
+    let pageSize = 10
+    let sumpage = Math.ceil(results.length / pageSize)
+    if (current == '') {
+      let data = results.splice(0, pageSize)
+      res.send({
+        sumpage: sumpage,
+        status: 200,
+        message: '获取信息成功',
+        data: data[0],
+        total: results.length,
+      })
+    } else {
+      const total = results.length
+      let data = results.splice((current - 1) * pageSize, pageSize)
+      res.send({
+        sumpage: sumpage,
+        message: '获取信息成功',
+        data: data[0],
+        data1: data[1],
+        total,
+      })
+    }
   })
 }
+
 
 exports.randindex = (req, res) => {
   db.query(`SELECT article_id,article_pic FROM article ORDER BY RAND() LIMIT 2;SELECT video_id,video_pic FROM video ORDER BY RAND() LIMIT 2;`, function (err, result, fields) {

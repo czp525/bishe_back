@@ -7,7 +7,7 @@ exports.getArticles = (req, res) => {
     res.send({
       status: 0,
       message: '获取文章数据成功',
-      data: results[0],
+      data: results,
     })
   })
 }
@@ -72,7 +72,7 @@ exports.getPage = (req, res) => {
       let data = results.splice(0, pageSize)
       res.send({
         sumpage: sumpage,
-        status: 200,
+        status: 0,
         message: '获取信息成功',
         data: data,
         total: results.length,

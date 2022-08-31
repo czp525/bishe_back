@@ -1,0 +1,181 @@
+"version": "1.0.0"
+"name": "DAE-back"
+"description": "DAE-back API Document"
+"main": "index.js"
+"author": "蔡兆平"
+"license": "ISC"
+"dependencies": {
+    "@escook/express-joi": "^1.1.1",
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "multer": "^1.4.5-lts.1"
+  }
+tags:
+  - name: article
+    description: "文章模块API"
+  - name: user
+    description: "用户及管理员模块API"
+  - name: userinfo
+    description: "管理员及用户操作模块API"
+  - name: video
+    description: "视频模块API"
+
+paths:
+  /my/article/articles:
+    get:
+      tags:
+        - article
+      summary: "获取文章"
+      description: "获取未删除的文章"
+      responses:
+        "0":
+          description: "获取文章数据成功"
+        "1":
+          description: "err"
+
+  /my/article/deletearticle/:article_id:
+    get:
+      tags:
+        - article
+      summary: "删除文章"
+      description: "根据id删除文章"
+      content:
+      responses:
+        "0":
+          description: "获取文章数据成功"
+          content:
+            params: required
+            application/json:
+              schema:
+                $ref: "#/api_server/schema/article"
+        "1":
+          description: "err"
+
+  /my/article/article/:id:
+    get:
+      tags:
+        - article
+      summary: "获取文章"
+      description: "根据id获取文章"
+      content:
+      responses:
+        "0":
+          description: "获取文章数据成功"
+          content:
+            params: required
+            application/json:
+              schema:
+                $ref: "#/api_server/schema/article"
+        "1":
+          description: "err"
+  /my/article/getpage:
+    get:
+      tags:
+        - article
+      summary: "获取分页"
+      description: "获取分页内容"
+      content:
+      responses:
+        "0":
+          description: "获取信息成功"
+          content:
+            current: required
+        "1":
+          description: "err"
+  /my/article/changearticle/:article_id:
+    get:
+      tags:
+        - article
+      summary: "编辑文章"
+      description: "根据id编辑文章"
+      content:
+      responses:
+        "0":
+          description: "编辑文章成功"
+          content:
+            params: required
+            application/json:
+              schema:
+                $ref: "#/api_server/schema/article"
+        "1":
+          description: "err"
+  /my/article/randarticle:
+    get:
+      tags:
+        - article
+      summary: "文章封面"
+      description: "随机获取文章封面"
+      content:
+      responses:
+        "0":
+          description: "随机获取成功"
+          content:
+        "1":
+          description: "err"
+  /my/article/articlelist:
+    get:
+      tags:
+        - article
+      summary: "文章排行榜"
+      description: "文章排行榜"
+      content:
+      responses:
+        "0":
+          description: "获取排行榜成功"
+          content:
+        "1":
+          description: "err"
+  /my/article/addarticle:
+    post:
+      tags:
+        - article
+      summary: "添加文章"
+      description: "添加文章"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/api_server/schema/article"
+      responses:
+        "0":
+          description: "添加文章成功"
+          content:
+        "1":
+          description: "err"
+  /my/article/updatearticle:
+      tags:
+        - article
+      summary: "更新文章"
+      description: "更新文章名称"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/api_server/schema/article"
+      responses:
+        "0":
+          description: "更新文章成功"
+          content:
+        "1":
+          description: "err"
+  /my/article/search:
+      tags:
+        - article
+      summary: "查找文章"
+      description: "查找文章"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/api_server/schema/article"
+      responses:
+        "0":
+          description: "查找文章成功"
+          content:
+        "1":
+          description: "err"
+  
+    

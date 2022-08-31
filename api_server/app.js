@@ -17,6 +17,7 @@ const config = require('./config')
 app.listen(8088, function () {
   console.log('api server running at http://192.168.67.29:8088')
 })
+
 app.use('/files', express.static(path.join(__dirname + '../../files')));
 // 写文件功能
 const storage = multer.diskStorage({
