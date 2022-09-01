@@ -19,7 +19,6 @@ exports.addArticles = (req, res) => {
   }
   const sql = `select * from article where title = ?`
   db.query(sql, req.body.title, (err, results) => {
-
     if (err) return res.cc(err)
     const sql = `insert into article set?`
     db.query(sql, articleInfo, (err, results) => {
