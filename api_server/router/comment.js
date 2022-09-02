@@ -7,7 +7,7 @@ const {
 } = require('../schema/comment')
 
 router.get('/comment', comment_handler.getComment)
-router.get('getpage2', comment_handler.getPage)
+router.get('/getpage2', comment_handler.getPage)
 router.post('/addcomment', expressJoi(add_comment_schema), comment_handler.addComment)
 
 module.exports = router

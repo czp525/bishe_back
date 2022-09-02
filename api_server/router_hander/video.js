@@ -150,3 +150,20 @@ exports.videolist = (req, res) => {
     })
   })
 }
+
+exports.addvideocomment = (req, res) => {
+  const commentInfo = {
+    ...req.body,
+  }
+  const sql = `SELECT ev_users.* , video_comment.* FROM ev_users INNER JOIN video_comment ON ev_users.username = video_comment.username where video_comment.video_id = ?`
+  console.log(commentInfo);
+  db.query(sql, req.body.video_id, (err, results) => {
+    if (err) return res.cc(err)
+    const sql = `insert into video_comment set ?`
+    db.query(sql, commentInfo, (err, results) => {
+      if (err) return res.cc(err)
+      if (results.affectedRows !== 1) return res.cc('新增评论失败')
+      res.cc('新增评论成功', 0)
+    })
+  })
+}

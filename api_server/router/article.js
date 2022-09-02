@@ -7,7 +7,8 @@ const {
   get_article_schema,
   update_article_schema,
   // change_article_schema,
-  search_article_schema
+  search_article_schema,
+  add_articlecomment_schema,
 } = require('../schema/article')
 const article_handler = require('../router_hander/article')
 
@@ -18,6 +19,7 @@ router.get('/getpage', article_handler.getPage)
 router.get('/changearticle/:article_id', article_handler.changeArticle)
 router.get('/randarticle', article_handler.randArticle)
 router.get('/articlelist', article_handler.articlelist)
+router.post('/addarticlecomment', expressJoi(add_articlecomment_schema), article_handler.addarticlecomment)
 router.post('/addarticle', expressJoi(add_article_schema), article_handler.addArticles)
 router.post('/updatearticle', article_handler.updateArticleById)
 // router.post('/changearticle1', expressJoi(change_article_schema), article_handler.changeArticle1)

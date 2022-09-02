@@ -8,6 +8,8 @@ const video_introduce = joi.string().required()
 const video_date = joi.string().required()
 const video_url = joi.string().required()
 const value = joi.string().required()
+const username = joi.string().required()
+const video_comment = joi.string().required()
 
 exports.add_video_schema = {
   body: {
@@ -41,4 +43,12 @@ exports.search_video_schema = {
   body: {
     value,
   },
+}
+
+exports.add_videocomment_schema = {
+  body: {
+    video_id,
+    video_comment,
+    username,
+  }
 }

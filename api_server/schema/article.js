@@ -8,6 +8,8 @@ const article_introduce = joi.string().required()
 const article_text = joi.required()
 const article_html = joi.required()
 const value = joi.string().required()
+const username = joi.string().required()
+const article_comment = joi.string().required()
 
 exports.add_article_schema = {
   body: {
@@ -55,4 +57,12 @@ exports.search_article_schema = {
   body: {
     value,
   },
+}
+
+exports.add_articlecomment_schema = {
+  body: {
+    article_id,
+    article_comment,
+    username,
+  }
 }

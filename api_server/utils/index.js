@@ -5,6 +5,8 @@ const videoRouter = require('../router/video')
 const articleRouter = require('../router/article')
 const userRouter = require('../router/user')
 const userinfoRouter = require('../router/userinfo')
+const commentRouter = require('../router/comment')
+const examRouter = require('../router/exam')
 const path = require("path")
 
 module.exports = (app) => {
@@ -32,6 +34,7 @@ module.exports = (app) => {
   app.use('/api', userRouter)
   app.use('/my', userinfoRouter)
   app.use('/my/comment', commentRouter)
+  // app.use('/my/exam', examRouter)
   //身份认证
   app.use((err, req, res, next) => {
     if (err instanceof Joi.ValidationError) return res.cc(err)

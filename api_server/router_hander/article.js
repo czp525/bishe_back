@@ -149,3 +149,19 @@ exports.articlelist = (req, res) => {
     })
   })
 }
+
+exports.addarticlecomment = (req, res) => {
+  const commentInfo = {
+    ...req.body,
+  }
+  const sql = `SELECT ev_users.* , article_comment.* FROM ev_users INNER JOIN article_comment ON ev_users.username = article_comment.username where article_comment.article_id = ?`
+  db.query(sql, req.body.article_id, (err, results) => {
+    if (err) return res.cc(err)
+    const sql = `insert into article_comment set ?`
+    db.query(sql, commentInfo, (err, results) => {
+      if (err) return res.cc(err)
+      if (results.affectedRows !== 1) return res.cc('新增评论失败')
+      res.cc('新增评论成功', 0)
+    })
+  })
+}

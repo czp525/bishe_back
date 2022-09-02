@@ -1,6 +1,6 @@
 const db = require('../db/index')
 
-exports.getComments = (req, res) => {
+exports.getComment = (req, res) => {
   const sql = `select * from comments where comment_id`
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
@@ -14,7 +14,7 @@ exports.getComments = (req, res) => {
 
 exports.addComment = (req, res) => {
   const commentInfo = {
-    req.body,
+    ...req.body,
     comment_data: new Data(),
   }
   const sql = `select * from comment where comment_id = ?`
