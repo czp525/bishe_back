@@ -52,3 +52,9 @@ exports.add_videocomment_schema = {
     username,
   }
 }
+
+exports.get_videocomment_schema = {
+  body: {
+    video_id,
+  }
+}

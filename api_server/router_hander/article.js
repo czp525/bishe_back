@@ -153,6 +153,7 @@ exports.articlelist = (req, res) => {
 exports.addarticlecomment = (req, res) => {
   const commentInfo = {
     ...req.body,
+    date: new Date(),
   }
   const sql = `SELECT ev_users.* , article_comment.* FROM ev_users INNER JOIN article_comment ON ev_users.username = article_comment.username where article_comment.article_id = ?`
   db.query(sql, req.body.article_id, (err, results) => {
@@ -161,7 +162,26 @@ exports.addarticlecomment = (req, res) => {
     db.query(sql, commentInfo, (err, results) => {
       if (err) return res.cc(err)
       if (results.affectedRows !== 1) return res.cc('新增评论失败')
-      res.cc('新增评论成功', 0)
+      res.send({
+        status: 0,
+        message: '评论成功',
+        data: results,
+      })
+    })
+  })
+}
+
+exports.getArticleComment = (req, res) => {
+  const articleInfo = {
+    ...req.body,
+  }
+  const sql = `SELECT ev_users.* , article_comment.* FROM ev_users INNER JOIN article_comment ON ev_users.username = article_comment.username where article_comment.article_id = ?`
+  db.query(sql, articleInfo.article_id, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取评论成功',
+      data: results,
     })
   })
 }

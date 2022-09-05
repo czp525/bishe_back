@@ -154,16 +154,35 @@ exports.videolist = (req, res) => {
 exports.addvideocomment = (req, res) => {
   const commentInfo = {
     ...req.body,
+    date: new Date(),
   }
   const sql = `SELECT ev_users.* , video_comment.* FROM ev_users INNER JOIN video_comment ON ev_users.username = video_comment.username where video_comment.video_id = ?`
-  console.log(commentInfo);
-  db.query(sql, req.body.video_id, (err, results) => {
+  db.query(sql, req.body.video_id, (err, result) => {
     if (err) return res.cc(err)
     const sql = `insert into video_comment set ?`
     db.query(sql, commentInfo, (err, results) => {
       if (err) return res.cc(err)
       if (results.affectedRows !== 1) return res.cc('新增评论失败')
-      res.cc('新增评论成功', 0)
+      res.send({
+        status: 0,
+        message: '评论成功',
+        data: SpeechRecognitionResultList,
+      })
+    })
+  })
+}
+
+exports.getVideoComment = (req, res) => {
+  const videoInfo = {
+    ...req.body,
+  }
+  const sql = `SELECT ev_users.* , video_comment.* FROM ev_users INNER JOIN video_comment ON ev_users.username = video_comment.username where video_comment.video_id = ?`
+  db.query(sql, videoInfo.video_id, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取评论成功',
+      data: results,
     })
   })
 }
