@@ -10,6 +10,9 @@ const article_html = joi.required()
 const value = joi.string().required()
 const username = joi.string().required()
 const article_comment = joi.string().required()
+const curprocess = joi.required()
+const process = joi.required()
+
 
 exports.add_article_schema = {
   body: {
@@ -69,6 +72,24 @@ exports.add_articlecomment_schema = {
 
 exports.get_articlecomment_schema = {
   body: {
+    article_id,
+  }
+}
+
+exports.duration1_schema = {
+  body: {
+    username,
+    process,
+    curprocess,
+    article_id,
+  }
+}
+
+exports.updateduration1_schema = {
+  body: {
+    username,
+    process,
+    curprocess,
     article_id,
   }
 }

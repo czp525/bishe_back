@@ -10,6 +10,8 @@ const video_url = joi.string().required()
 const value = joi.string().required()
 const username = joi.string().required()
 const video_comment = joi.string().required()
+const curprocess = joi.required()
+const process = joi.required()
 
 exports.add_video_schema = {
   body: {
@@ -55,6 +57,24 @@ exports.add_videocomment_schema = {
 
 exports.get_videocomment_schema = {
   body: {
+    video_id,
+  }
+}
+
+exports.duration_schema = {
+  body: {
+    username,
+    process,
+    curprocess,
+    video_id,
+  }
+}
+
+exports.updateduration_schema = {
+  body: {
+    username,
+    process,
+    curprocess,
     video_id,
   }
 }

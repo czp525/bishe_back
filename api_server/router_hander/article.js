@@ -183,5 +183,39 @@ exports.getArticleComment = (req, res) => {
       message: '获取评论成功',
       data: results,
     })
+    console.log(results);
+  })
+}
+
+exports.Duration1 = (req, res) => {
+  const processInfo = {
+    ...req.body,
+  }
+  const sql = `SELECT ev_users.username ,article_process.process,article_process.article_id,article_process.curprocess FROM ev_users INNER JOIN article_process ON ev_users.username = article_process.username where article_process.username= ?`
+  db.query(sql, req.body.username, (err, result) => {
+    if (err) return res.cc(err)
+    const sql = `insert into article_process set ?`
+    db.query(sql, processInfo, (err, results) => {
+      if (err) return res.cc(err)
+      if (results.affectedRows !== 1) return res.cc('新增进度失败')
+      res.send({
+        status: 0,
+        message: '成功',
+        data: processInfo,
+      })
+    })
+  })
+}
+
+exports.updateduration1 = (req, res) => {
+  const sql = `update article_process set ? where username = ?`
+  db.query(sql, [req.body, req.body.username], (err, results) => {
+    if (err) return res.cc(err)
+    if (results.affectedRows !== 1) return res.cc('更新进度失败！')
+    res.send({
+      status: 0,
+      message: '更新进度成功',
+      data: req.body,
+    })
   })
 }

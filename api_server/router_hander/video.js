@@ -166,7 +166,7 @@ exports.addvideocomment = (req, res) => {
       res.send({
         status: 0,
         message: '评论成功',
-        data: SpeechRecognitionResultList,
+        data: results,
       })
     })
   })
@@ -184,5 +184,39 @@ exports.getVideoComment = (req, res) => {
       message: '获取评论成功',
       data: results,
     })
+  })
+}
+
+exports.Duration = (req, res) => {
+  const processInfo = {
+    ...req.body,
+  }
+  const sql = `SELECT ev_users.username ,video_process.process,video_process.video_id,video_process.curprocess FROM ev_users INNER JOIN video_process ON ev_users.username = video_process.username where video_process.username = ?`
+  db.query(sql, req.body.username, (err, result) => {
+    if (err) return res.cc(err)
+    const sql = `insert into video_process set ?`
+    db.query(sql, processInfo, (err, results) => {
+      if (err) return res.cc(err)
+      if (results.affectedRows !== 1) return res.cc('新增进度失败')
+      res.send({
+        status: 0,
+        message: '成功',
+        data: processInfo,
+      })
+    })
+  })
+}
+
+exports.updateduration = (req, res) => {
+  const sql = `update video_process set ? where username = ?`
+  db.query(sql, [req.body, req.body.username], (err, results) => {
+    if (err) return res.cc(err)
+    if (results.affectedRows !== 1) return res.cc('更新进度失败！')
+    res.send({
+      status: 0,
+      message: '更新进度成功',
+      data: req.body,
+    })
+    console.log(results);
   })
 }

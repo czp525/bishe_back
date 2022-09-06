@@ -10,6 +10,8 @@ const {
   search_article_schema,
   add_articlecomment_schema,
   get_articlecomment_schema,
+  duration1_schema,
+  updateduration1_schema,
 } = require('../schema/article')
 const article_handler = require('../router_hander/article')
 
@@ -24,6 +26,8 @@ router.post('/getarticlecomment', expressJoi(get_articlecomment_schema), article
 router.post('/addarticlecomment', expressJoi(add_articlecomment_schema), article_handler.addarticlecomment)
 router.post('/addarticle', expressJoi(add_article_schema), article_handler.addArticles)
 router.post('/updatearticle', article_handler.updateArticleById)
+router.post('/duration1', expressJoi(duration1_schema), article_handler.Duration1)
+router.post('/updateduration1', expressJoi(updateduration1_schema), article_handler.updateduration1)
 // router.post('/changearticle1', expressJoi(change_article_schema), article_handler.changeArticle1)
 router.post('/search', expressJoi(search_article_schema), article_handler.searchArticle)
 
