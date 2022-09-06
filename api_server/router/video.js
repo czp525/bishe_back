@@ -14,7 +14,6 @@ const {
   add_videocomment_schema,
   get_videocomment_schema,
   duration_schema,
-  updateduration_schema,
 } = require('../schema/video')
 
 const video_handler = require('../router_hander/video')
@@ -24,12 +23,12 @@ router.get('/delete/:video_id', expressJoi(delete_video_schema), video_handler.d
 router.get('/getpage1', video_handler.getPage)
 router.get('/randvideo', video_handler.randVideo)
 router.get('/videolist', video_handler.videolist)
+router.get('/getduration', video_handler.getduration)
 router.post('/getvideocomment', expressJoi(get_videocomment_schema), video_handler.getVideoComment)
 router.post('/addvideocomment', expressJoi(add_videocomment_schema), video_handler.addvideocomment)
 router.post('/addvideo', expressJoi(add_video_schema), video_handler.addVideos)
 router.post('/updatevideo', video_handler.updateVideoById)
 router.post('/duration', expressJoi(duration_schema), video_handler.Duration)
-router.post('/updateduration', expressJoi(updateduration_schema), video_handler.updateduration)
 // router.post('/changevideo', expressJoi(change_video_schema), video_hander.changeVideo)
 router.post('/search1', expressJoi(search_video_schema), video_handler.searchVideo1)
 

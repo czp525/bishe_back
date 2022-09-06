@@ -69,12 +69,3 @@ exports.duration_schema = {
     video_id,
   }
 }
-
-exports.updateduration_schema = {
-  body: {
-    username,
-    process,
-    curprocess,
-    video_id,
-  }
-}

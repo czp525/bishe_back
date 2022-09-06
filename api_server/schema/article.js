@@ -84,12 +84,3 @@ exports.duration1_schema = {
     article_id,
   }
 }
-
-exports.updateduration1_schema = {
-  body: {
-    username,
-    process,
-    curprocess,
-    article_id,
-  }
-}
