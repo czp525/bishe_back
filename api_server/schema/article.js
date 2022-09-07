@@ -79,7 +79,6 @@ exports.get_articlecomment_schema = {
 exports.duration1_schema = {
   body: {
     username,
-    process,
     curprocess,
     article_id,
   }

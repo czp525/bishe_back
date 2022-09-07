@@ -186,11 +186,12 @@ exports.getArticleComment = (req, res) => {
   })
 }
 
-exports.Duration1 = (req, res) => {
+exports.duration1 = (req, res) => {
   const processInfo = {
     ...req.body,
+    date: new Date(),
   }
-  const sql = `SELECT ev_users.username ,article_process.process,article_process.article_id,article_process.curprocess FROM ev_users INNER JOIN article_process ON ev_users.username =article_process.username where article_process.username = ? And article_process.article_id = ?`
+  const sql = `SELECT ev_users.username ,article_process.process,article_process.article_id,article_process.curprocess FROM ev_users INNER JOIN article_process ON ev_users.username = article_process.username where article_process.username = ? And article_process.article_id = ?`
   db.query(sql, [req.body.username, req.body.article_id], (err, result) => {
     if (result.length === 0) {
       const sql = `insert into article_process set ?`
@@ -204,15 +205,27 @@ exports.Duration1 = (req, res) => {
         })
       })
     } else {
-      const sql = `update article_process set ? where username =?`
-      db.query(sql, [req.body, req.body.username], (err, results) => {
-        if (err) return res.cc(err)
-        res.send({
-          status: 0,
-          message: '更新进度成功',
-          data: req.body,
+      if ((req.body.curprocess * 1) >= (result[0].curprocess * 1)) {
+        const sql = `update article_process set ? where username =? And article_id =?`
+        db.query(sql, [req.body, req.body.username, req.body.article_id], (err, results) => {
+          const process = ((req.body.curprocess * 1) / (result[0].process * 1) * 100) + '%'
+          const process1Info = {
+            propercent: process,
+          }
+          const sql = `update article_process set ? where username =? And article_id =?`
+          db.query(sql, [process1Info, req.body.username, req.body.article_id], (err, results) => {
+            console.log(process1Info);
+            if (err) return res.cc(err)
+            res.send({
+              status: 0,
+              message: '更新进度成功',
+              data: req.body,
+            })
+          })
         })
-      })
+      } else {
+        console.log('失败');
+      }
     }
   })
 }

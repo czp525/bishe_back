@@ -26,7 +26,7 @@ router.post('/getarticlecomment', expressJoi(get_articlecomment_schema), article
 router.post('/addarticlecomment', expressJoi(add_articlecomment_schema), article_handler.addarticlecomment)
 router.post('/addarticle', expressJoi(add_article_schema), article_handler.addArticles)
 router.post('/updatearticle', article_handler.updateArticleById)
-router.post('/duration1', expressJoi(duration1_schema), article_handler.Duration1)
+router.post('/duration1', expressJoi(duration1_schema), article_handler.duration1)
 // router.post('/changearticle1', expressJoi(change_article_schema), article_handler.changeArticle1)
 router.post('/search', expressJoi(search_article_schema), article_handler.searchArticle)
 
