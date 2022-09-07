@@ -206,15 +206,27 @@ exports.Duration = (req, res) => {
         })
       })
     } else {
-      const sql = `update video_process set ? where username =?`
-      db.query(sql, [req.body, req.body.username], (err, results) => {
-        if (err) return res.cc(err)
-        res.send({
-          status: 0,
-          message: '更新进度成功',
-          data: req.body,
+      if ((req.body.curprocess * 1) >= (result[0].curprocess * 1)) {
+        const sql = `update video_process set ? where username =? And video_id =?`
+        db.query(sql, [req.body, req.body.username, req.body.video_id], (err, results) => {
+          const process = ((req.body.curprocess * 1) / (result[0].process * 1) * 100) + '%'
+          const process1Info = {
+            propercent: process,
+          }
+          const sql = `update  video_process set ? where username =? And video_id =?`
+          db.query(sql, [process1Info, req.body.username, req.body.video_id], (err, results) => {
+            console.log(process1Info);
+            if (err) return res.cc(err)
+            res.send({
+              status: 0,
+              message: '更新进度成功',
+              data: req.body,
+            })
+          })
         })
-      })
+      } else {
+        console.log('失败');
+      }
     }
   })
 }

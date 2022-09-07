@@ -64,7 +64,6 @@ exports.get_videocomment_schema = {
 exports.duration_schema = {
   body: {
     username,
-    process,
     curprocess,
     video_id,
   }
