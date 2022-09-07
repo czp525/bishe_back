@@ -6,7 +6,6 @@ const config = require('../config')
 //注册账号和密码认证
 exports.regUser = (req, res) => {
   const userinfo = req.body
-  console.log(userinfo)
   if (!userinfo.username || !userinfo.password) {
     return res.send({
       status: 1,

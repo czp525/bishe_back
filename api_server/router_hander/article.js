@@ -183,18 +183,15 @@ exports.getArticleComment = (req, res) => {
       message: '获取评论成功',
       data: results,
     })
-    console.log(results);
   })
 }
 
 exports.Duration1 = (req, res) => {
   const processInfo = {
     ...req.body,
-    date: new Date(),
   }
   const sql = `SELECT ev_users.username ,article_process.process,article_process.article_id,article_process.curprocess FROM ev_users INNER JOIN article_process ON ev_users.username =article_process.username where article_process.username = ? And article_process.article_id = ?`
-  db.query(sql, [req.body.username, req.body.video_id], (err, result) => {
-    console.log(result);
+  db.query(sql, [req.body.username, req.body.article_id], (err, result) => {
     if (result.length === 0) {
       const sql = `insert into article_process set ?`
       db.query(sql, processInfo, (err, results) => {
@@ -221,13 +218,30 @@ exports.Duration1 = (req, res) => {
 }
 
 exports.getduration1 = (req, res) => {
-  const sql = `select * from article_process `
+  const sql = `select * from article_process`
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
-    res.send({
-      status: 0,
-      message: '成功',
-      data: results,
-    })
+    let current = Number(req.query.current)
+    let pageSize = 10
+    let sumpage = Math.ceil(results.length / pageSize)
+    if (current == '') {
+      let data = results.splice(0, pageSize)
+      res.send({
+        sumpage: sumpage,
+        status: 0,
+        message: '获取成功',
+        data: data,
+        total: results.length,
+      })
+    } else {
+      const total = results.length
+      let data = results.splice((current - 1) * pageSize, pageSize)
+      res.send({
+        sumpage: sumpage,
+        message: '获取成功',
+        data: data,
+        total,
+      })
+    }
   })
 }

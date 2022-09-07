@@ -194,8 +194,6 @@ exports.Duration = (req, res) => {
   }
   const sql = `SELECT ev_users.username ,video_process.process,video_process.video_id,video_process.curprocess FROM ev_users INNER JOIN video_process ON ev_users.username = video_process.username where video_process.username = ? And video_process.video_id = ?`
   db.query(sql, [req.body.username, req.body.video_id], (err, result) => {
-    console.log(result);
-
     if (result.length === 0) {
       const sql = `insert into video_process set ?`
       db.query(sql, processInfo, (err, results) => {
@@ -223,13 +221,30 @@ exports.Duration = (req, res) => {
 
 
 exports.getduration = (req, res) => {
-  const sql = `select * from video_process `
+  const sql = `select * from video_process`
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
-    res.send({
-      status: 0,
-      message: '成功',
-      data: results,
-    })
+    let current = Number(req.query.current)
+    let pageSize = 10
+    let sumpage = Math.ceil(results.length / pageSize)
+    if (current == '') {
+      let data = results.splice(0, pageSize)
+      res.send({
+        sumpage: sumpage,
+        status: 0,
+        message: '获取成功',
+        data: data,
+        total: results.length,
+      })
+    } else {
+      const total = results.length
+      let data = results.splice((current - 1) * pageSize, pageSize)
+      res.send({
+        sumpage: sumpage,
+        message: '获取成功',
+        data: data,
+        total,
+      })
+    }
   })
 }

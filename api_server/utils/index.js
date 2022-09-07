@@ -5,7 +5,7 @@ const videoRouter = require('../router/video')
 const articleRouter = require('../router/article')
 const userRouter = require('../router/user')
 const userinfoRouter = require('../router/userinfo')
-const commentRouter = require('../router/comment')
+const forumRouter = require('../router/forum')
 const examRouter = require('../router/exam')
 const path = require("path")
 
@@ -33,7 +33,7 @@ module.exports = (app) => {
   app.use('/my/video', videoRouter)
   app.use('/api', userRouter)
   app.use('/my', userinfoRouter)
-  app.use('/my/comment', commentRouter)
+  app.use('/my/forum', forumRouter)
   // app.use('/my/exam', examRouter)
   //身份认证
   app.use((err, req, res, next) => {
