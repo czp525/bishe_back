@@ -1,6 +1,6 @@
 const joi = require('joi')
 const title = joi.string().required()
-const article_id = joi.number().integer().min(1)
+const article_id = joi.number().integer().min(1).required()
 const article_type = joi.string().required()
 const article_type_classify = joi.string().required()
 const author = joi.string().required()
