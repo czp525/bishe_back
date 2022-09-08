@@ -66,5 +66,6 @@ exports.duration_schema = {
     username,
     curprocess,
     video_id,
+    process,
   }
 }

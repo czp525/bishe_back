@@ -188,34 +188,49 @@ exports.getVideoComment = (req, res) => {
 }
 
 exports.Duration = (req, res) => {
-  const processInfo = {
-    ...req.body,
-    date: new Date(),
-  }
   const sql = `SELECT ev_users.username ,video_process.process,video_process.video_id,video_process.curprocess FROM ev_users INNER JOIN video_process ON ev_users.username = video_process.username where video_process.username = ? And video_process.video_id = ?`
+
+  function timestampToTime(timestamp) {
+    var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+    var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+    var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+    var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+    return Y + M + D + h + m + s;
+  }
+  let date = new Date()
+  var timestamp = new Date().getTime();
   db.query(sql, [req.body.username, req.body.video_id], (err, result) => {
     if (result.length === 0) {
+      const process = ((req.body.curprocess * 1) / (req.body.process * 1) * 100) + '%'
       const sql = `insert into video_process set ?`
-      db.query(sql, processInfo, (err, results) => {
+      const process1Info = {
+        propercent: process,
+        ...req.body,
+        date: timestampToTime(timestamp),
+      }
+      db.query(sql, process1Info, (err, results) => {
         if (err) return res.cc(err)
         if (results.affectedRows !== 1) return res.cc('新增进度失败')
         res.send({
           status: 0,
           message: '新增进度成功',
-          data: processInfo,
+          data: process1Info,
         })
       })
     } else {
       if ((req.body.curprocess * 1) >= (result[0].curprocess * 1)) {
         const sql = `update video_process set ? where username =? And video_id =?`
         db.query(sql, [req.body, req.body.username, req.body.video_id], (err, results) => {
-          const process = ((req.body.curprocess * 1) / (result[0].process * 1) * 100) + '%'
+          const process = Math.ceil(((req.body.curprocess * 1) / (result[0].process * 1)) * 100) + '%'
           const process1Info = {
             propercent: process,
+            date: timestampToTime(timestamp),
           }
-          const sql = `update  video_process set ? where username =? And video_id =?`
+          const sql = `update video_process set ? where username =? And video_id =?`
           db.query(sql, [process1Info, req.body.username, req.body.video_id], (err, results) => {
-            console.log(process1Info);
             if (err) return res.cc(err)
             res.send({
               status: 0,
@@ -231,10 +246,24 @@ exports.Duration = (req, res) => {
   })
 }
 
-
 exports.getduration = (req, res) => {
-  const sql = `select * from video_process`
+  const sql = `SELECT video_process.username,video_process.propercent,video_process.date,video.title FROM video_process INNER JOIN video ON  video_process.video_id = video.video_id `
   db.query(sql, (err, results) => {
+    function timestampToTime(timestamp) {
+      var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+      var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+      var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+      return Y + M + D + h + m + s;
+    }
+    for (let i = 0; i <= results.length - 1; i++) {
+      var timestamp = results[i].date.getTime();
+      time = timestampToTime(timestamp);
+      results[i].date = time
+    }
     if (err) return res.cc(err)
     let current = Number(req.query.current)
     let pageSize = 10
@@ -244,7 +273,7 @@ exports.getduration = (req, res) => {
       res.send({
         sumpage: sumpage,
         status: 0,
-        message: '获取成功',
+        message: '获取成功1',
         data: data,
         total: results.length,
       })
@@ -255,6 +284,7 @@ exports.getduration = (req, res) => {
         sumpage: sumpage,
         message: '获取成功',
         data: data,
+        date: time,
         total,
       })
     }

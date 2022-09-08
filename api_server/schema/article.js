@@ -81,5 +81,6 @@ exports.duration1_schema = {
     username,
     curprocess,
     article_id,
+    process,
   }
 }

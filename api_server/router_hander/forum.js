@@ -5,8 +5,8 @@ exports.addforum = (req, res) => {
     ...req.body,
     date: new Date(),
   }
-  const sql = `select * from forum where forum_id = ?`
-  db.query(sql, req.body.forum_id, (err, results) => {
+  const sql = `select * from forum `
+  db.query(sql, (err, results) => {
     if (err) return res.cc(err)
     const sql = `insert into forum set?`
     db.query(sql, forumInfo, (err, results) => {
