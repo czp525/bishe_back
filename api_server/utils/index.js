@@ -34,7 +34,7 @@ module.exports = (app) => {
   app.use('/api', userRouter)
   app.use('/my', userinfoRouter)
   app.use('/my/forum', forumRouter)
-  // app.use('/my/exam', examRouter)
+  app.use('/my/exam', examRouter)
   //身份认证
   app.use((err, req, res, next) => {
     if (err instanceof Joi.ValidationError) return res.cc(err)

@@ -20,6 +20,21 @@ exports.addforum = (req, res) => {
 exports.getPage = (req, res) => {
   const sql = `select * from forum where forum_id order by date DESC`
   db.query(sql, (err, results) => {
+    function timestampToTime(timestamp) {
+      var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+      var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+      var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+      return Y + M + D + h + m + s;
+    }
+    for (let i = 0; i <= results.length - 1; i++) {
+      var timestamp = results[i].date.getTime();
+      time = timestampToTime(timestamp);
+      results[i].date = time
+    }
     if (err) return res.cc(err)
     let current = Number(req.query.current)
     let pageSize = 10
@@ -49,11 +64,12 @@ exports.getPage = (req, res) => {
 exports.getforum = (req, res) => {
   const sql = `select * from forum where forum_id = ?`
   db.query(sql, req.body.forum_id, (err, results) => {
+
     if (err) return res.cc(err)
     res.send({
       status: 0,
       message: '获取文章数据成功',
-      data: results,
+      data: results[0],
     })
   })
 }
@@ -81,7 +97,7 @@ exports.addcomment = (req, res) => {
 
 exports.getPage1 = (req, res) => {
   const sql = `SELECT ev_users.* ,forum_comment.* FROM ev_users INNER JOIN forum_comment ON ev_users.username = forum_comment.username where forum_comment.forum_id = ?`
-  db.query(sql, req.body.forum_id, (err, results) => {
+  db.query(sql, req.query.forum_id, (err, results) => {
     if (err) return res.cc(err)
     let current = Number(req.query.current)
     let pageSize = 10
