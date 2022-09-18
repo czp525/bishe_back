@@ -1,16 +1,16 @@
 const joi = require('joi')
 const forum_title = joi.string().required()
-const forum_writer = joi.string().required()
 const forum_body = joi.required()
 const forum_id = joi.number().integer().min(1)
 const username = joi.string().required()
 const forum_comment = joi.string().required()
 const current = joi.number()
+const nickname = joi.string()
 
 exports.add_forum_schema = {
   body: {
     forum_title,
-    forum_writer,
+    nickname,
     forum_body,
   }
 }

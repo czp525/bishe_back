@@ -62,13 +62,13 @@ exports.getPage = (req, res) => {
 }
 
 exports.getforum = (req, res) => {
-  const sql = `select * from forum where forum_id = ?`
+  const sql = `SELECT ev_users.* ,forum.* FROM ev_users INNER JOIN forum ON ev_users.nickname = forum.nickname where forum.forum_id = ?`
   db.query(sql, req.body.forum_id, (err, results) => {
 
     if (err) return res.cc(err)
     res.send({
       status: 0,
-      message: '获取文章数据成功',
+      message: '获取帖子数据成功',
       data: results[0],
     })
   })
