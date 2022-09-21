@@ -33,6 +33,7 @@ exports.regUser = (req, res) => {
       email: userinfo.email,
       nickname: userinfo.nickname,
       phonenumber: userinfo.phonenumber,
+      imgurl: userinfo.imgurl,
     }, (err, results) => {
       if (err) return res.cc(err)
       if (results.affectedRows != 1) return res.cc('注册失败，请稍后再试')

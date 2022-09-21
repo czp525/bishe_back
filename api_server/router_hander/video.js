@@ -64,6 +64,22 @@ exports.updateVideoById = (req, res) => {
 exports.getPage = (req, res) => {
   const sql = `select * from video where is_delete = 0`
   db.query(sql, (err, results) => {
+    function timestampToTime(timestamp) {
+      var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+      var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+      var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+      return Y + M + D + h + m + s;
+    }
+    for (let i = 0; i <= results.length - 1; i++) {
+      var timestamp = results[i].video_date.getTime();
+      time = timestampToTime(timestamp);
+      results[i].video_date = time
+      console.log(results[i].date);
+    }
     if (err) return res.cc(err)
     let current = Number(req.query.current)
     let pageSize = 10
