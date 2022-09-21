@@ -258,13 +258,11 @@ exports.getduration1 = (req, res) => {
       var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
       return Y + M + D + h + m + s;
     }
-    console.log(results);
     for (let i = 0; i <= results.length - 1; i++) {
       var timestamp = results[i].date.getTime();
       time = timestampToTime(timestamp);
       results[i].date = time
     }
-    console.log(results);
     if (err) return res.cc(err)
     let current = Number(req.query.current)
     let pageSize = 10
