@@ -15,7 +15,7 @@ const config = require('./config')
 // }))
 
 app.listen(8088, function () {
-  console.log('api server running at http://10.2.13.132')
+  console.log('api server running at http://10.2.13.136')
 })
 
 app.use('/files', express.static(path.join(__dirname + '../../files')));
@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
     cb(null, 'files')
   },
   filename: function (req, file, cb) {
-    console.log(file);
+    // console.log(file);
     const type = file.mimetype.match(/(?<=\/)[a-zA-Z0-9]+/);
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
     cb(null, file.fieldname + '-' + uniqueSuffix + `.${type}`)
@@ -37,7 +37,7 @@ const upload = multer({
 
 const uploadFile = async (req, res) => {
   upload(req, res, function (err) {
-    console.log(req.file);
+    // console.log(req.file);
     res.send(req.file);
   })
 }

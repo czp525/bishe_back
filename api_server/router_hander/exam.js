@@ -69,7 +69,7 @@ exports.submitexam = (req, res) => {
               [...Object.entries(req.body.values)][i][0],
               [...Object.entries(req.body.values)][i][1], req.body.exam_id, req.body.username,
             ], (err, results) => {
-              console.log('成功');
+
             })
           }
         }
@@ -96,7 +96,6 @@ exports.submitexam = (req, res) => {
 exports.garde = (req, res) => {
   const sql = `SELECT question.exam_id,question.question_id,question.question_answer,user_answer.* FROM question INNER JOIN user_answer ON question.exam_id = user_answer.exam_id AND question.question_id = user_answer.answer_id WHERE username = ? And user_answer.exam_id = ?`
   db.query(sql, [req.body.username, req.body.exam_id], (err, results) => {
-    console.log(results);
     if (err) return res.cc(err)
     // console.log(results[0].question_answer);
     // console.log(results[0].answer);
@@ -111,10 +110,10 @@ exports.garde = (req, res) => {
             const sql = `INSERT INTO errquestion SET username = ?,answer_id = ?,exam_id = ?`
             // console.log(results);
             db.query(sql, [results[i].username, results[i].answer_id, results[i].exam_id], (err, result1) => {
-              console.log('添加错题成功')
+
             })
           } else {
-            console.log('错题已存在')
+
           }
         })
       }

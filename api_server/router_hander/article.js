@@ -77,7 +77,7 @@ exports.getPage = (req, res) => {
       var timestamp = results[i].article_date.getTime();
       time = timestampToTime(timestamp);
       results[i].article_date = time
-      console.log(results[i].date);
+
     }
 
     if (err) return res.cc(err)

@@ -78,7 +78,7 @@ exports.getPage = (req, res) => {
       var timestamp = results[i].video_date.getTime();
       time = timestampToTime(timestamp);
       results[i].video_date = time
-      console.log(results[i].date);
+
     }
     if (err) return res.cc(err)
     let current = Number(req.query.current)
