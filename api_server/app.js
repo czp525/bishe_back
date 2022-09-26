@@ -15,7 +15,7 @@ const config = require('./config')
 // }))
 
 app.listen(8088, function () {
-  console.log('api server running at http://10.2.13.136')
+  console.log('api server running at http://10.2.13.142')
 })
 
 app.use('/files', express.static(path.join(__dirname + '../../files')));

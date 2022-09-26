@@ -92,11 +92,11 @@ exports.getPage = (req, res) => {
         total: results.length,
       })
     } else {
-      const total = results.length
+      const total = results[0].length + results[1].length
       let data = results.splice((current - 1) * pageSize, pageSize)
       res.send({
         sumpage: sumpage,
-        message: '获取信息成功',
+        message: '获取信息',
         data: data[0],
         data1: data[1],
         total,

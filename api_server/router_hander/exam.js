@@ -118,7 +118,7 @@ exports.garde = (req, res) => {
         })
       }
     }
-    var garde = (100 / (results.length) * 1) * (count * 1);
+    var garde = Math.ceil((100 / (results.length) * 1) * (count * 1));
     res.send({
       status: 0,
       message: '阅卷成功',

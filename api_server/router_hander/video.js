@@ -144,7 +144,7 @@ exports.searchVideo1 = (req, res) => {
 }
 
 exports.randVideo = (req, res) => {
-  const sql = `select video_id,video_pic from video ORDER BY RAND() LIMIT 4`
+  const sql = `select * from video ORDER BY RAND() LIMIT 4`
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
     res.send({

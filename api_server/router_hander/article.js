@@ -144,7 +144,7 @@ exports.searchArticle = (req, res) => {
 }
 
 exports.randArticle = (req, res) => {
-  const sql = `select article_id,article_pic from article ORDER BY RAND() LIMIT 4`
+  const sql = `select * from article ORDER BY RAND() LIMIT 4`
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
     res.send({
