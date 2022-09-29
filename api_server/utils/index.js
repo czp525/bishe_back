@@ -30,6 +30,7 @@ module.exports = (app) => {
       extended: false,
     })
   );
+  app.use(express.json()); //错误中间件
   app.use(function (req, res, next) {
     res.cc = function (err, status = 1) {
       res.send({
