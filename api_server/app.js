@@ -7,12 +7,13 @@ const path = require("path");
 const multer = require("multer");
 const config = require("./config");
 
-// 验证权限范围除了带 / api以外的路径
-// app.use(expressJWT({
-//   secret: config.jwtSecretKey
-// }).unless({
-//   path: [/^\/api\//]
-// }))
+app.use(
+  expressJWT({
+    secret: config.jwtSecretKey,
+  }).unless({
+    path: [/^\/api\//],
+  })
+);
 
 app.listen(8088, function () {
   console.log("api server running at http://10.2.13.142");
